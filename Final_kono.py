@@ -231,8 +231,8 @@ damage_text_group = pygame.sprite.Group()
 
         
 knight = Fighter(200, 260, 'Knight', 30, 10, 3)
-bandit1 = Fighter(550, 270, 'Bandit', 5, 6, 1)
-bandit2 = Fighter(700, 270, 'Bandit', 5, 6, 1)
+bandit1 = Fighter(550, 270, 'Bandit', 20, 6, 1)
+bandit2 = Fighter(700, 270, 'Bandit', 20, 6, 1)
 
 bandit_list = []
 bandit_list.append(bandit1)
