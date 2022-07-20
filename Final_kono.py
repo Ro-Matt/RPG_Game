@@ -40,10 +40,45 @@ class Fighter():
         self.start_potions = potions
         self.potions = potions
         self.alive = True
-        img = pygame.image.load(f'img/{self.name}/Idle/0.png')
-        self.image = pygame.transform.scale(img, (img.get_width() * 3, img.get_height() * 3))
+        self.animation_list = []
+        # 0:idle, 1:attack, 2:hurt, 3:dead
+        self.action = 0
+        self.frame_index = 0
+        self.update_time = pygame.time.get_ticks()
+        
+        #loading IDLE images
+        temp_list = []
+        for i in range(8):
+            img = pygame.image.load(f'img/{self.name}/Idle/{i}.png')
+            img = pygame.transform.scale(img, (img.get_width() * 3, img.get_height() * 3))
+            temp_list.append(img)
+        self.animation_list.append(temp_list)
+        
+        #loading ATTACK images
+        temp_list = []
+        for i in range(8):
+            img = pygame.image.load(f'img/{self.name}/Attack/{i}.png')
+            img = pygame.transform.scale(img, (img.get_width() * 3, img.get_height() * 3))
+            temp_list.append(img)
+        self.animation_list.append(temp_list)
+        
+        
+        self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+        
+    def update(self):
+        animation_cooldown = 100
+        #handles animation
+        self.image = self.animation_list[self.action][self.frame_index]
+        
+        #check ticks for update animation
+        if pygame.time.get_ticks() - self.update_time > animation_cooldown:
+            self.update_time = pygame.time.get_ticks()
+            self.frame_index += 1
+        #loop animation at the end of index
+        if self.frame_index >= len(self.animation_list[self.action]):
+            self.frame_index = 0
         
         
     def draw(self):
@@ -67,8 +102,10 @@ while run:
     draw_panel()
     
     #draw fighters
+    knight.update()
     knight.draw()
     for bandit in bandit_list:
+        bandit.update()
         bandit.draw()
     
     for event in pygame.event.get():
